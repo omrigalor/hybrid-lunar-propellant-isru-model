@@ -1,11 +1,16 @@
-# Lunar Molten-Regolith Electrolysis Simulator
+# Hybrid Lunar Water-Ice Propellant & Molten-Regolith ISRU Model
 
-A thermal and electrochemical process model for producing oxygen and metal
-co-products from lunar regolith. It connects cell warm-up, heat loss, power,
-current efficiency, material yield, electrode wear, maintenance, and output
-uncertainty.
+An end-to-end lunar resource model with two complementary pathways:
 
-![Electrolysis system architecture](assets/reference.svg)
+- icy regolith is mined, purified, electrolyzed, liquefied, and stored as liquid hydrogen fuel and liquid oxygen oxidizer;
+- dry regolith is melted and electrolyzed to produce supplemental oxygen and metal co-products.
+
+The shared ledger reports what a vehicle can actually use after power limits,
+resource uncertainty, storage losses, degradation, and engine mixture ratio.
+It prevents gross oxygen output from being mistaken for complete return fuel:
+hydrogen from lunar water is usually the limiting propellant.
+
+![Hybrid lunar ISRU architecture](assets/reference.svg)
 
 ```bash
 python -m pip install -e .
@@ -15,37 +20,40 @@ pytest -q
 
 ## The question
 
-How much oxygen and metal product can a molten-regolith electrolysis cell
-produce after accounting for thermal energy, conversion efficiency, electrode
-degradation, maintenance, and uncertain power delivery?
+How much return propellant, breathable or reserve oxygen, and construction metal
+can a dual-pathway lunar plant produce when its real bottlenecks are counted?
 
-The simulator first heats the cell to its operating range. During production,
-available power and current efficiency constrain each batch. Efficiency falls
-with electrode wear and temperature deviation; maintenance restores part of
-the cell state. A seeded ensemble reports an oxygen-output range.
+The water pathway models ice concentration, extraction and purification yield,
+electrolysis, liquefaction, boiloff, and the engine oxidizer-to-fuel ratio. The
+molten-regolith pathway models 1,600°C startup, heat loss, conversion efficiency,
+electrode wear, maintenance, oxygen yield, and metal recovery. The combined
+result identifies whether hydrogen or oxygen limits usable propellant.
 
 ## Outputs
 
-- processed and unprocessed regolith
-- oxygen and metal co-product mass
-- warm-up, operating, and maintenance hours
-- energy used and specific energy per kilogram of oxygen
-- current efficiency and electrode wear
-- P10, mean, and P90 oxygen production
+- processed icy and dry regolith
+- recovered water and stored liquid hydrogen
+- water-derived and regolith-derived oxygen
+- usable paired propellant and excess oxygen
+- metal co-products
+- energy use, degradation, maintenance, and operating time
+- P10/mean/P90 propellant and oxygen output
 
 ## Evidence base
 
-- NASA, *Production of Oxygen from Lunar Regolith Using Molten Oxide
-  Electrolysis*: https://ntrs.nasa.gov/citations/20090018064
-- ESA, *ESA opens oxygen plant — making air out of moondust*:
-  https://www.esa.int/Enabling_Support/Space_Engineering_Technology/ESA_opens_oxygen_plant_making_air_out_of_moondust
-- NASA, *ISRU Gap Assessment Report*:
-  https://ntrs.nasa.gov/citations/20210022137
+- NASA, *Case Study for Lunar ISRU Systems Utilizing Polar Water*:
+  https://ntrs.nasa.gov/citations/20205008303
+- NASA, *Technology Assessment for Producing Propellant From Lunar Water*:
+  https://ntrs.nasa.gov/citations/20230005189
+- NASA TechPort, *Lunar Ice Processing (Ice-TP)*:
+  https://techport.nasa.gov/projects/156386
+- NASA, *Production of Oxygen from Lunar Regolith Using Molten Oxide Electrolysis*:
+  https://ntrs.nasa.gov/citations/20090018064
 
 ## Limits
 
-This is a low-order research simulator, not an electrochemical design tool or
-flight-qualified control system. Default kinetic, yield, heat-loss, and wear
-parameters are explicit illustrative assumptions. The model omits melt
-chemistry by mineral phase, gas handling, electrode geometry, corrosion
-mechanisms, contamination, and detailed thermal-vacuum hardware.
+This is a low-order research model, not mission-planning or flight hardware
+software. Default recovery, energy, storage, melt, and site values are explicit
+assumptions. It omits detailed excavation mechanics, contaminant chemistry,
+thermal-vacuum hardware, tanker routing, melt chemistry by mineral phase, and
+engine qualification.
